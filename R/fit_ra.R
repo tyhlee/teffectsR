@@ -75,7 +75,6 @@ fit_ra<- function(X,Y,Zy,Ofam=gaussian(),treatment.effect="ATE",weights=rep(1,N)
     a$Wald <- TE^2/Var
     a$PO.means <- c(Po1 = Po1.mean, Po0 = Po0.mean)
     a$PO.std.err<- c(Po1 = sqrt(sum(IF1^2))/N, Po0 = sqrt(sum(IF0^2))/N )
-    a$models <- list(mod0=Y.mod0,mod1=Y.mod1)
     return(a)
   })
   
@@ -85,7 +84,7 @@ fit_ra<- function(X,Y,Zy,Ofam=gaussian(),treatment.effect="ATE",weights=rep(1,N)
             Wald = as.double(run["Wald",]),
             Po.means = run["PO.means",],
             Po.std.err = run["PO.std.err",],
-           models = run["models"])
+           models = list(mod0=Y.mod0,mod1=Y.mod1))
   names(a$coef) <- names(a$std.err) <- names(a$Wald) <- names(P.wts)
   return(a)
 }
