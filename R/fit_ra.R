@@ -38,8 +38,15 @@ fit_ra<- function(X,Y,Zy,Ofam=gaussian(),treatment.effect="ATE",weights=rep(1,N)
   Y.mod1 = glm.fit(Zy,Y,family=Ofam,weights = weights*X)
   Y.mod0 = glm.fit(Zy,Y,family=Ofam,weights = weights*(1-X))
   df_counter <- cbind(Y.mod0$fitted.values,Y.mod1$fitted.values)
-  counterfacutal <- as.vector(df_counter[,2-X])
-  
+  counterfactual <- NULL
+  for(i in 1:N){
+    if(X[i]==0){ 
+      tmp <- Y.mod1$fitted.values[i]
+               } else {
+    tmp <-   Y.mod0$fitted.values[i]
+    }
+    counterfactual <- c(counterfactual,tmp)
+   }  
   IFb1 = IF.glm(Y.mod1,Zy) #Influence function of outcome model
   IFb0 = IF.glm(Y.mod0,Zy) #Influence function of outcome model
   
