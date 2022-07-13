@@ -37,6 +37,8 @@ fit_ra<- function(X,Y,Zy,Ofam=gaussian(),treatment.effect="ATE",weights=rep(1,N)
 
   Y.mod1 = glm.fit(Zy,Y,family=Ofam,weights = weights*X)
   Y.mod0 = glm.fit(Zy,Y,family=Ofam,weights = weights*(1-X))
+  df_counter <- cbind(Y.mod0$fitted.values,Y.mod1$fitted.values)
+  counterfacutal <- as.vector(df_counter[,2-X])
   
   IFb1 = IF.glm(Y.mod1,Zy) #Influence function of outcome model
   IFb0 = IF.glm(Y.mod0,Zy) #Influence function of outcome model
@@ -84,7 +86,7 @@ fit_ra<- function(X,Y,Zy,Ofam=gaussian(),treatment.effect="ATE",weights=rep(1,N)
             Wald = as.double(run["Wald",]),
             Po.means = run["PO.means",],
             Po.std.err = run["PO.std.err",],
-           models = list(mod0=Y.mod0,mod1=Y.mod1))
+           counterfactual = counterfacutal)
   names(a$coef) <- names(a$std.err) <- names(a$Wald) <- names(P.wts)
   return(a)
 }
