@@ -94,7 +94,9 @@ fit_ra<- function(X,Y,Zy,Ofam=gaussian(),treatment.effect="ATE",weights=rep(1,N)
             Po.means = run["PO.means",],
             Po.std.err = run["PO.std.err",],
            counterfactual = counterfactual,
-           predicted.values = cbind(Y.mod0$fitted.values,Y.mod1$fitted.values))
+           predicted.values = cbind(Y.mod0$fitted.values,Y.mod1$fitted.values),
+           PoM1 = Y.mod1,
+           PoM0 = Y.mod0)
   names(a$coef) <- names(a$std.err) <- names(a$Wald) <- names(P.wts)
   return(a)
 }
